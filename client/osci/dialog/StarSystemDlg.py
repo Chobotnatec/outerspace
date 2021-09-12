@@ -974,10 +974,6 @@ class StarSystemDlg:
             return
 
     def onDemolishStruct(self, widget, action, data):
-        self.confirmDlg.display(_("Demolish this structure?"),
-            _("Yes"), _("No"), self.onDemolishStructConfirmed)
-
-    def onDemolishStructConfirmed(self):
         try:
             self.win.setStatus(_('Executing DEMOLISH STRUCTURE command...'))
             planet = client.get(self.planetID, noUpdate = 1)
@@ -1031,8 +1027,19 @@ class StarSystemDlg:
             return
 
     def onAbortTask(self, widget, action, data):
-        self.confirmDlg.display(_("Abort this construction task?"),
-            _("Yes"), _("No"), self.onAbortTaskConfirmed)
+        try:
+            self.win.setStatus(_('Executing ABORT TASK command...'))
+            planet = client.get(self.planetID, noUpdate=1)
+            player = client.getPlayer()
+            planet.prodQueue, player.stratRes = client.cmdProxy.abortConstruction(self.planetID, self.plInfoData)
+            self.plInfoType = self.plInfoTypeSelected = INFO_NONE
+            self.plInfoData = self.plInfoDataSelected = None
+            self.win.vPQueue.selectItem(None)
+            self.showPlanet()
+            self.win.setStatus(_('Command has been executed.'))
+        except ige.GameException, e:
+            self.win.setStatus(e.args[0])
+            return
 
     def onQtyTask(self, widget, action, data):
         planet = client.get(self.planetID, noUpdate = 1)
@@ -1051,21 +1058,6 @@ class StarSystemDlg:
             except ige.GameException, e:
                 self.win.setStatus(e.args[0])
                 return
-
-    def onAbortTaskConfirmed(self):
-        try:
-            self.win.setStatus(_('Executing ABORT TASK command...'))
-            planet = client.get(self.planetID, noUpdate = 1)
-            player = client.getPlayer()
-            planet.prodQueue, player.stratRes = client.cmdProxy.abortConstruction(self.planetID, self.plInfoData)
-            self.plInfoType = self.plInfoTypeSelected = INFO_NONE
-            self.plInfoData = self.plInfoDataSelected = None
-            self.win.vPQueue.selectItem(None)
-            self.showPlanet()
-            self.win.setStatus(_('Command has been executed.'))
-        except ige.GameException, e:
-            self.win.setStatus(e.args[0])
-            return
 
     def onTaskInfo(self, widget, action, data):
         planet = client.get(self.planetID, noUpdate = 1)
