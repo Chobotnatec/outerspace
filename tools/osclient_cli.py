@@ -183,12 +183,12 @@ elif options.chronicler:
 
     gdata.config.game.server = 'localhost:9080'
 
-    gdata.config.defaults.minfleetsymbolsize = 4
-    gdata.config.defaults.minplanetsymbolsize = 5
+    gdata.config.defaults.minfleetsymbolsize = 8
+    gdata.config.defaults.minplanetsymbolsize = 8
     gdata.config.defaults.maxfleetsymbolsize = 0
     gdata.config.defaults.maxplanetsymbolsize = 0
 
-    options.heartbeat = 60
+    options.heartbeat = 10
     osci.client.initialize('localhost:9080', dummyHandler, options)
     osci.client.login(options.game, 'admin', password)
     osci.client.cmdProxy.selectAdmin()

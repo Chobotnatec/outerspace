@@ -92,7 +92,7 @@ parser_client.add_argument("--password", dest = "password",
 parser_client.add_argument("--heartbeat", dest = "heartbeat",
     type = int,
     metavar = "SECONDS",
-    default = 60,
+    default = 10,
     help = "Heartbeat for server connection"
 )
 

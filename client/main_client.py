@@ -119,9 +119,9 @@ def setDefaults(gdata, options):
     if gdata.config.client.language == None:
         gdata.config.client.language = 'en'
     if gdata.config.defaults.minfleetsymbolsize == None:
-        gdata.config.defaults.minfleetsymbolsize = 4
+        gdata.config.defaults.minfleetsymbolsize = 8
     if gdata.config.defaults.minplanetsymbolsize == None:
-        gdata.config.defaults.minplanetsymbolsize = 5
+        gdata.config.defaults.minplanetsymbolsize = 8
     if gdata.config.defaults.maxfleetsymbolsize == None:
         gdata.config.defaults.maxfleetsymbolsize = 0
     if gdata.config.defaults.maxplanetsymbolsize == None:

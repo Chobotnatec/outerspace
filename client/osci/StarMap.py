@@ -211,7 +211,6 @@ class StarMap(object):
                     slots += planet.plSlots
                 if hasattr(planet, "plStratRes") and planet.plStratRes != Const.SR_NONE:
                     stratRes = planet.plStratRes
-                    stratRes = planet.plStratRes
                     icons.append(res.icons["sr_%d" % planet.plStratRes])
                 if owner:
                     ownerID = owner
