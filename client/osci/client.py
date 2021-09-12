@@ -140,7 +140,6 @@ def updateDatabase(clearDB = 0):
     except:
         log.warning("Cannot update database")
     # again with clear
-    callbackObj.onUpdateFinished()
     messageEnable(Const.SMESSAGE_NEWTURN)
     messageEnable(Const.SMESSAGE_NEWMESSAGE)
     return updateDatabaseUnsafe(clearDB = 1, force = 1)
@@ -165,13 +164,11 @@ def updateDatabaseUnsafe(clearDB = 0, force = 0):
     # start updating...
     messageIgnore(Const.SMESSAGE_NEWTURN)
     messageIgnore(Const.SMESSAGE_NEWMESSAGE)
-    callbackObj.onUpdateStarting()
     current = 0
     max = 1
     # compute total objects to be fetched
     max += 6 # clear map, get messages, ...
     current += 1
-    callbackObj.onUpdateProgress(current, max, _("Deleting obsolete data..."))
     # delete selected objects
     # reset combatCounters
     for objID in db.keys():
@@ -191,27 +188,25 @@ def updateDatabaseUnsafe(clearDB = 0, force = 0):
             if hasattr(obj, "scannerPwr"): obj.scannerPwr = 0
     # update player
     current += 1
-    callbackObj.onUpdateProgress(current, max, _("Downloading player data..."))
     db[db.playerID] = get(db.playerID)
     player = db[db.playerID]
     # update from scanner's map
     current += 1
-    callbackObj.onUpdateProgress(current, max, _("Updating scanner..."))
     map = cmdProxy.getScannerMap(db.playerID)
     for objID in map:
         db[objID] = map[objID]
     # update player's planets and fleets
     current += 1
-    callbackObj.onUpdateProgress(current, max, _("Downloading planets and fleets data..."))
     for obj in cmdProxy.multiGetInfo(1, player.planets[:] + player.fleets[:]):
         db[obj.oid] = obj
     # TODO: try to load allies's info
     # get messages from server
     current += 1
-    callbackObj.onUpdateProgress(current, max, _("Downloading messages..."))
     getMessages()
     log.message('IClient', 'Update finished.')
-    callbackObj.onUpdateFinished()
+    for dialog in gdata.updateDlgs:
+        print(dialog)
+        dialog.update()
     messageEnable(Const.SMESSAGE_NEWTURN)
     messageEnable(Const.SMESSAGE_NEWMESSAGE)
 
